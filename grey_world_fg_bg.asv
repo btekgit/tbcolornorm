@@ -7,11 +7,7 @@ function  [out, msk_img] = grey_world_fg_bg(inp,dbRGB, plt)
 if(nargin<2)
     disp('must give at least input filename and RGB reference values');
     disp('this will run in demo mode!');
-
     [out, msk_img] = grey_world_fg_bg('ex1.jpg',[245,245,245,148,148,178], 1);
-    [out, msk_img] = grey_world_fg_bg('ex2.jpg',[245,245,245,148,148,178], 1);
-    [out, msk_img] = grey_world_fg_bg('ex3.jpg',[245,245,245,148,148,178], 1);
-    return;
 elseif (nargin==2)
     plt = 0; 
 end
@@ -78,15 +74,14 @@ new_rgb(:,:,3) = new_b;
 out =  uint8(new_rgb);
 
 %%
-if (plt)
-    figure(111); 
+if (plt) 
     in_r = img_rgb(:,:,1);
     in_g = img_rgb(:,:,2);
     in_b = img_rgb(:,:,3);
     h_r_inp = histc ( in_r(:), 0.5:1:255);
     h_g_inp = histc ( in_g(:), 0.5:1:255);
     h_b_inp = histc ( in_b(:), 0.5:1:255);
-    subplot(321); 
+    figure; 
     x= 1:255; 
     plot( x, h_r_inp, 'r', x, h_g_inp, 'g', x, h_b_inp, 'b');
     title ('Input RGB histograms');
@@ -94,14 +89,14 @@ if (plt)
     h_r_inp_bg_v = histc ( r_inp_bg_v, 0.5:1:255);
     h_g_inp_bg_v = histc ( g_inp_bg_v, 0.5:1:255);
     h_b_inp_bg_v = histc ( b_inp_bg_v, 0.5:1:255);
-    subplot(322);
+    figure; 
     x= 1:255; 
     plot( x, h_r_inp_bg_v, 'r', x, h_g_inp_bg_v, 'g', x, h_b_inp_bg_v, 'b');
     title ('Input Background RGB histograms');
     h_r_out_bg_v = histc ( new_r(:), 0.5:1:255);
     h_g_out_bg_v = histc ( new_g(:), 0.5:1:255);
     h_b_out_bg_v = histc ( new_b(:), 0.5:1:255);
-    subplot(323);
+    figure;
     plot( x, h_r_out_bg_v, 'r.', x, h_g_out_bg_v, 'g.', x, h_b_out_bg_v, 'b.');
     title ('I Background/ mean background  RGB histograms');
     
@@ -156,7 +151,7 @@ new_rgb = (new_fg_rgb +bg_px);
 out =  double(new_rgb);
 
 %%
-ite = 1 ;
+ite = 1 
 % this part can iterate
 %
 % while ((any(ratios_fg<0.95) | any(ratios_fg>1.05)) & ite < 4)
@@ -188,7 +183,7 @@ if (plt)
     h_g_inp_fg_v = medfilt1(histc ( g_inp_fg_v, 0.5:1:255),7);
     h_b_inp_fg_v = medfilt1(histc ( b_inp_fg_v, 0.5:1:255),13);
     
-   subplot(324);
+    figure; 
     x= 1:255; 
     plot( x, h_r_inp_fg_v, 'r', x, h_g_inp_fg_v, 'g', x, h_b_inp_fg_v, 'b');
     xlabel('Level');    ylabel('Pixel Count');
@@ -199,7 +194,7 @@ if (plt)
     h_g_out_fg_v = medfilt1(histc ( g_fg_inp(:), 0.5:1:255),7);
     h_b_out_fg_v = medfilt1(histc ( b_fg_inp(:), 0.5:1:255),7);
     
-    subplot(325);
+    figure;
     plot( x, h_r_out_fg_v, 'r', x, h_g_out_fg_v, 'g', x, h_b_out_fg_v, 'b');
     title ('Foreground /ref  RGB histograms');
     xlabel('Level');    ylabel('Pixel Count');
@@ -212,7 +207,7 @@ if (plt)
     h_g_out = histc ( out_g(:), 0.5:1:256);
     h_b_out = histc ( out_b(:), 0.5:1:256);
 
-    subplot(326);
+    figure; 
     x= 0:255; 
     plot( x, h_r_out, 'r', x, h_g_out, 'g', x, h_b_out, 'b');
     title ('Output RGB histograms');
