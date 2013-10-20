@@ -1,8 +1,19 @@
 function  [out, msk_img] = grey_world_fg_bg(inp,dbRGB, plt)
 %function  [out, msk_img, fg_img] = grey_world_fg_bg(inp,dbRGB, plt)
-% inp: input RGB image filename or 3D matrix
+% inp: input RGB image filename or 3D matrix of RGB image channels
 % dbRGB: reference R, G, B average values for bg and fg. A vector of 6
-% uint8 values.
+% uint8 values. E.g.[245,245,245,148,148,178]
+% plt=1 enables plots, default is
+%
+
+% Copyright 2008-2013 F. Boray Tek.
+% All rights reserved.
+%
+%
+% Permission granted to use and copy the code for research and 
+% educational purposes only.  Sale of the code is not permitted. The code may be 
+% redistributed so long as the original source and authors are cited.
+% Please ask for up to date citation information.
 
 if(nargin<2)
     disp('must give at least input filename and RGB reference values');
@@ -37,8 +48,8 @@ img_gray =uint8(rgb2gray(img_rgb));
 img_rgb = double(img_rgb);
 
 %This one uses the simplest Otsu thresholding. 
-% Because area based double threshold requires mex files
-%thresholding which requires area opening function
+%Because area based double threshold requires compilation of mex files
+%that implement area opening function
 img_gray_inv = 255-img_gray;
 level = graythresh(double(img_gray_inv)/255);
 msk_img = im2bw(img_gray_inv,level);
@@ -156,9 +167,8 @@ new_rgb = (new_fg_rgb +bg_px);
 out =  double(new_rgb);
 
 %%
-ite = 1 ;
-% this part can iterate
-%
+ite = 0 ;
+% this part can be used to iterate
 % while ((any(ratios_fg<0.95) | any(ratios_fg>1.05)) & ite < 4)
 %     r_inp_fg_v = r_fg_inp(I_fg_px);
 %     g_inp_fg_v = g_fg_inp(I_fg_px);
